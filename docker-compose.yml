@@ -1,0 +1,11 @@
+services:
+  format-tokenizer:
+    image: 192.168.0.140:8443/toon-token:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: format-tokenizer
+    ports:
+      - "8081:80"
+    restart: unless-stopped
