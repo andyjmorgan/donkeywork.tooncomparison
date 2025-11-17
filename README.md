@@ -45,6 +45,17 @@ npm run build
 
 ### Docker Deployment
 
+1. **Set up environment variables**:
+```bash
+# Copy the example env file
+cp .env.example .env
+
+# Edit .env and add your API keys
+# ANTHROPIC_API_KEY=your_actual_anthropic_key
+# GOOGLE_API_KEY=your_actual_google_key
+```
+
+2. **Build and run**:
 ```bash
 # Build and run with Docker Compose
 docker compose up -d
@@ -56,6 +67,10 @@ Or pull from registry:
 ```bash
 docker pull 192.168.0.140:8443/toon-token:latest
 ```
+
+**Note**: The backend API requires valid Anthropic and Google API keys to function. You can get:
+- Anthropic API key at: https://console.anthropic.com/
+- Google API key at: https://aistudio.google.com/app/apikey
 
 ## 🏗️ Tech Stack
 
