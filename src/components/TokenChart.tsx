@@ -100,7 +100,7 @@ export function TokenChart({
         }
       },
       title: {
-        display: true,
+        display: false,
         text: 'Token Count Comparison',
         color: textColor
       }

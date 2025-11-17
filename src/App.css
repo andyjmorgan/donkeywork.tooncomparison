@@ -5,6 +5,19 @@
   margin-left: 4px;
 }
 
+/* Reduce padding in model dropdown boxes */
+.p-dropdown {
+  padding: 0.5rem !important;
+}
+
+.p-dropdown .p-dropdown-label {
+  padding: 0 !important;
+}
+
+.p-dropdown .p-dropdown-trigger {
+  width: 2rem !important;
+}
+
 /* Tablet/Medium screen responsiveness - 2x2 grid for outputs */
 @media (max-width: 1200px) {
   /* Bottom row becomes 2x2 grid */
@@ -51,7 +64,7 @@
 
   /* Chart needs more space on mobile to prevent squeezing */
   .main-content > div:first-child > div:last-child {
-    min-height: 450px !important;
+    min-height: 550px !important;
     flex: 0 0 auto !important;
   }
 
