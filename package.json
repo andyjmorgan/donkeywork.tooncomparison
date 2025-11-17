@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@toon-format/toon": "^1.0.0",
+    "chart.js": "^4.5.1",
     "gpt-tokenizer": "^3.4.0",
     "js-yaml": "^4.1.1",
+    "js2xmlparser": "^5.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.7",
     "react": "^19.2.0",

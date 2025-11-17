@@ -5,6 +5,16 @@
   margin-left: 4px;
 }
 
+/* Tablet/Medium screen responsiveness - 2x2 grid for outputs */
+@media (max-width: 1200px) {
+  /* Bottom row becomes 2x2 grid */
+  .main-content > div:last-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+  }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   /* Header stacks vertically on mobile */
@@ -19,81 +29,63 @@
     justify-content: center;
   }
 
-  /* Token stats wrapper more compact on mobile */
-  .token-stats-wrapper {
-    padding: 0.5rem 0.75rem !important;
+  /* Main content needs to scroll on mobile */
+  .main-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    flex: 1 1 auto !important;
   }
 
-  /* Token stats wrap better and more compact */
-  .token-stats {
-    font-size: 0.75rem !important;
-    gap: 0.5rem !important;
-    padding: 0 !important;
+  /* Main content becomes vertical stack */
+  .main-content > div:first-child {
     flex-direction: column !important;
-    align-items: flex-start !important;
+    min-height: 800px !important;
+    flex: 0 0 auto !important;
   }
 
-  .token-stats > div {
-    width: 100%;
+  /* JSON Input should be reasonable size */
+  .main-content > div:first-child > div:first-child {
+    min-height: 300px !important;
+    flex: 0 0 auto !important;
   }
 
-  .token-stats strong {
-    font-size: 0.8rem;
+  /* Chart needs more space on mobile to prevent squeezing */
+  .main-content > div:first-child > div:last-child {
+    min-height: 450px !important;
+    flex: 0 0 auto !important;
   }
 
-  .token-stats a {
-    font-size: 0.75rem !important;
+  /* Output panels stack vertically (single column) on mobile */
+  .main-content > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 800px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .main-content > div:last-child > div {
+    min-height: 200px !important;
+    flex: 0 0 auto !important;
   }
 
   /* Section headers adjust for mobile */
-  .section-header h3 {
+  h3 {
     font-size: 1rem !important;
   }
 
   /* Buttons are smaller */
-  .section-header .p-button {
-    font-size: 0.875rem !important;
+  .p-button-sm {
+    font-size: 0.75rem !important;
+    padding: 0.375rem 0.5rem !important;
   }
 
-  /* Hide splitters and use grid layout on mobile */
-  .main-content-splitter {
-    display: none !important;
-  }
-
-  .mobile-grid-layout {
-    display: grid !important;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    overflow-y: auto;
-    height: 100%;
-  }
-
-  .mobile-panel {
-    min-height: 400px;
-    max-height: 500px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .mobile-panel .p-inputtextarea {
-    flex: 1;
-    min-height: 300px !important;
-  }
-
-  .mobile-panel .section-header {
-    flex-wrap: wrap;
+  /* Reduce gap between panels */
+  .main-content {
     gap: 0.5rem !important;
+    padding: 0.5rem !important;
   }
 
-  .mobile-panel .section-header > div {
-    flex-wrap: wrap;
-  }
-}
-
-/* Desktop: hide mobile grid, show splitters */
-@media (min-width: 769px) {
-  .mobile-grid-layout {
-    display: none !important;
+  .main-content > div {
+    gap: 0.5rem !important;
   }
 }

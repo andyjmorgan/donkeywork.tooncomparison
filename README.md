@@ -1,6 +1,6 @@
 # Format Tokenizer
 
-A data-driven token efficiency comparison tool for JSON, TOON, and YAML serialization formats. Built to demonstrate that **compact JSON delivers nearly identical token savings to exotic formats** like TOON, while remaining a format LLMs are already trained to understand.
+A data-driven token efficiency comparison tool for JSON, TOON, YAML, and XML serialization formats. Built to demonstrate that **compact JSON delivers nearly identical token savings to exotic formats** like TOON, while remaining a format LLMs are already trained to understand.
 
 **🎮 [Try it live at toon.donkeywork.dev](https://toon.donkeywork.dev)**
 
@@ -8,18 +8,25 @@ A data-driven token efficiency comparison tool for JSON, TOON, and YAML serializ
 
 ## 🎯 Purpose
 
-This application debunks social media hype around proprietary serialization formats by providing real-time, visual token count comparisons. Test with your own data and see the truth: compact JSON is efficient, familiar, and sufficient.
+This application debunks social media hype around proprietary serialization formats by providing real-time, visual token count comparisons across **three major AI providers** (OpenAI, Anthropic, Google). Test with your own data and see the truth: compact JSON is efficient, familiar, and sufficient.
 
 ## ✨ Features
 
-- **Real-Time Token Counting**: Uses `gpt-tokenizer` (o200k_base encoding) to calculate exact token counts
-- **Four Format Comparison**: JSON (pretty & compact), TOON, and YAML
+- **Multi-Provider Token Counting**:
+  - OpenAI (o200k_base encoding via `gpt-tokenizer`)
+  - Anthropic (configurable model selection via backend API)
+  - Google (configurable model selection via backend API)
+- **Five Format Comparison**: JSON (pretty & compact), TOON, YAML, and XML
 - **Visual Tokenization**: Color-coded token breakdown with interactive tooltips
-- **Summary Bar Chart**: Side-by-side comparison showing efficiency percentages
-- **Mobile Responsive**: Grid layout on mobile, splitter layout on desktop
+- **Interactive Bar Chart**: Horizontal bar chart comparing all formats across providers, sorted by efficiency
+- **Fully Responsive**:
+  - Desktop (>1200px): 4-column output layout
+  - Tablet (768px-1200px): 2x2 grid output layout
+  - Mobile (<768px): Vertical stack with proper scrolling
 - **Example Data**: Quick-load Simple and Advanced JSON examples
-- **Dark/Light Theme**: Toggle between Lara light and dark cyan themes
+- **Dark/Light Theme**: Toggle between Material Design Indigo dark and light themes (defaults to dark)
 - **Copy to Clipboard**: Easy export of any format
+- **Skeleton Loaders**: Visual feedback during API calls
 
 ## 🚀 Quick Start
 
@@ -53,11 +60,15 @@ docker pull 192.168.0.140:8443/toon-token:latest
 ## 🏗️ Tech Stack
 
 - **Framework**: React 19 + TypeScript + Vite
-- **UI Library**: PrimeReact (Lara theme family)
-- **Token Counting**: `gpt-tokenizer` (o200k_base)
+- **UI Library**: PrimeReact (Material Design Indigo theme)
+- **Token Counting**:
+  - Client-side: `gpt-tokenizer` (o200k_base)
+  - Backend API: Anthropic and Google tokenizers
 - **Format Libraries**:
   - `@toon-format/toon` - TOON encoding
   - `js-yaml` - YAML serialization
+  - `js2xmlparser` - XML serialization
+- **Charts**: Chart.js via PrimeReact
 - **Deployment**: Docker (multi-stage build with nginx)
 
 ## 📊 How It Works
@@ -70,30 +81,42 @@ docker pull 192.168.0.140:8443/toon-token:latest
 
 ## 🎨 UI Components
 
-### Four-Panel Layout
-- **JSON Input** (top-left): Editable textarea with format button
-- **JSON Output** (bottom-left): Toggle between compact/pretty with token visualization
-- **TOON Output** (top-right): Encoded TOON format
-- **YAML Output** (bottom-right): YAML serialization
+### Component Architecture
+The application is built with modular, reusable React components:
+- **Header**: Logo, theme toggle, GitHub link, and About button
+- **JsonInputPanel**: JSON input with example loaders and format button
+- **OutputPanel**: Reusable panel for all output formats with token visualization
+- **TokenChart**: Interactive horizontal bar chart with model selection
+- **AboutDialog**: Project information modal
+- **TokenDisplay**: Token visualization with color-coding
+
+### Layout
+- **Top Row**: JSON Input (left) | Token Chart (right)
+- **Bottom Row**: JSON Output | TOON Output | YAML Output | XML Output
 
 ### Token Visualization
-- Toggle between plain text and tokenized view per format
-- Colored backgrounds for each token (12-color palette)
+- Color-coded token breakdown (12-color palette)
 - Hover tooltips show token ID and text
-- Different palettes for light/dark mode
+- Different color palettes for light/dark mode (Material Design variants)
 
-### Statistics Footer
-- Real-time token counts for each format
-- Percentage saved/lost compared to current JSON format
-- Link to summary modal with bar chart
+### Interactive Chart
+- Horizontal bar chart comparing all formats
+- Model selection dropdowns for Anthropic and Google
+- Formats sorted by efficiency (smallest to largest average tokens)
+- Skeleton loaders during API calls
+- Dark mode optimized with proper contrast
 
-## 📱 Mobile Experience
+## 📱 Responsive Design
 
-On screens ≤768px:
-- Splitter layout hidden
-- Vertical grid with scrollable sections
-- Compact footer with vertical stats layout
-- 400-500px panel heights for better viewing
+Three breakpoints for optimal viewing:
+- **Desktop (>1200px)**: 4-column output layout
+- **Tablet (768px-1200px)**: 2x2 grid output layout
+- **Mobile (<768px)**:
+  - Full vertical stack layout
+  - Single column for all outputs
+  - Scrollable content with proper overflow handling
+  - Minimum heights to prevent content squeezing
+  - Chart gets 450px minimum height
 
 ## 🐳 Docker Configuration
 
@@ -121,8 +144,8 @@ EXPOSE 80
 ### Default Settings
 - **Initial Data**: Advanced glossary example
 - **Output Format**: Compact JSON (demonstrates efficiency)
-- **Theme**: Light mode (lara-light-cyan)
-- **Tokenization View**: Enabled for all formats
+- **Theme**: Dark mode (md-dark-indigo)
+- **Tokenization View**: Always enabled with color-coded display
 
 ### Environment
 - Port: 8081 (Docker Compose)
@@ -133,10 +156,21 @@ EXPOSE 80
 
 ```
 src/
-├── App.tsx           # Main application component
-├── App.css          # App-specific styles, mobile responsive
-├── index.css        # Global styles, PrimeReact imports
-├── main.tsx         # Entry point
+├── App.tsx              # Main application logic and state
+├── App.css             # Responsive styles (mobile/tablet/desktop)
+├── index.css           # Global styles, PrimeReact imports
+├── main.tsx            # Entry point
+├── api/
+│   ├── index.ts        # API exports
+│   ├── client.ts       # Backend API calls
+│   └── types.ts        # TypeScript interfaces
+├── components/
+│   ├── Header.tsx      # App header with actions
+│   ├── JsonInputPanel.tsx  # JSON input editor
+│   ├── OutputPanel.tsx     # Reusable output display
+│   ├── TokenChart.tsx      # Chart with model selection
+│   ├── AboutDialog.tsx     # About modal
+│   └── TokenDisplay.tsx    # Token visualization
 └── assets/
     ├── donkeywork.png  # Logo
     └── favicon.ico     # Favicon
